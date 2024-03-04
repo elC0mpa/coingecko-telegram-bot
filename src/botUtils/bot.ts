@@ -1,4 +1,5 @@
 import { Telegraf, Scenes, session } from 'telegraf'
+import { UserInteractionConstants } from './constants'
 import { MainMenuKeyboard } from './keyboards'
 import { initCoinsRoutes } from './routes/coins'
 
@@ -12,11 +13,14 @@ const initBot = () => {
   bot.start(ctx => {
     ctx.reply('Menú Principal', MainMenuKeyboard)
   })
+  initCoinsRoutes(bot, wizardsStage)
+
   bot.use(session())
   bot.use(wizardsStage.middleware())
 
-  initCoinsRoutes(bot)
-
+  bot.hears(UserInteractionConstants.MAIN_MENU, ctx => {
+    ctx.reply('Menú Principal', MainMenuKeyboard)
+  })
   const launchOptions = {}
   bot.launch(launchOptions)
   process.once('SIGINT', () => bot.stop('SIGINT'))
