@@ -1,4 +1,6 @@
 import { Telegraf, Scenes, session } from 'telegraf'
+import { MainMenuKeyboard } from './keyboards'
+import { initCoinsRoutes } from './routes/coins'
 
 const initBot = () => {
   const bot = new Telegraf(process.env.BOT_TOKEN)
@@ -8,10 +10,13 @@ const initBot = () => {
   // bot.use(allowedUsers)
 
   bot.start(ctx => {
-    ctx.reply('Hola mundo')
+    ctx.reply('Menú Principal', MainMenuKeyboard)
   })
   bot.use(session())
   bot.use(wizardsStage.middleware())
+
+  initCoinsRoutes(bot)
+
   const launchOptions = {}
   bot.launch(launchOptions)
   process.once('SIGINT', () => bot.stop('SIGINT'))
