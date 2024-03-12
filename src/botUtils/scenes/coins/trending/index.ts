@@ -6,24 +6,12 @@ import { SceneIDS } from '../../../constants'
 import { getCoinInfo } from '../../../formatters/coins'
 import { createSelectByLabelKeyboard, MainMenuKeyboard, NoKeyboard } from '../../../keyboards'
 
-export const coinDataWizard = new Scenes.WizardScene(
-  SceneIDS.COIN_DATA,
+export const coinTrendingWizard = new Scenes.WizardScene(
+  SceneIDS.COIN_TRENDING,
   async ctx => {
-    ctx.reply(
-      'Inserte el nombre de la criptomoneda de la cual desea obtener la información.\nNo tiene que insertar el nombre completo',
-      NoKeyboard
-    )
+    const trendingCurrencies = await searchService.trendingData()
+    ctx.reply('Por favor seleccione la criptomoneda', createSelectByLabelKeyboard(trendingCurrencies, 'id'))
     return ctx.wizard.next()
-  },
-  async ctx => {
-    if (!ctx.has(message('text'))) {
-      ctx.reply('Por favor inserte un texto')
-      return
-    }
-    const query = ctx.message.text
-    const options = await searchService.searchCriptos(query)
-    ctx.reply('Por favor seleccione la criptomoneda', createSelectByLabelKeyboard(options, 'id'))
-    ctx.wizard.next()
   },
   async ctx => {
     if (!ctx.has(message('text'))) {

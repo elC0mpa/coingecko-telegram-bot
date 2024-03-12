@@ -10,6 +10,17 @@ class SearchService extends BaseService {
     const url = `${this.moduleURL}?query=${query}`
     return this.client.get(url).then(({ data }) => data.coins)
   }
+
+  trendingData = (): Promise<Partial<SearchResponse[]>> => {
+    const url = `${this.moduleURL}/trending`
+    return this.client.get(url).then(({ data }) =>
+      data.coins.map(coin => {
+        return {
+          id: coin.item.id,
+        }
+      })
+    )
+  }
 }
 
 const searchService = new SearchService()
