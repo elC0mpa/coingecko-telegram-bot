@@ -11,7 +11,6 @@ export const initCoinsRoutes = (bot: Telegraf<Context<Update>>, wizardStage: Wiz
     ctx.reply('Menú Criptos', CoinsMenuKeyboard)
   })
   wizardStage.hears(UserInteractionConstants.COINS_DATA_ACTION, ctx => {
-    console.log('Escuchando')
     ctx.scene.enter(SceneIDS.COIN_DATA)
   })
 }

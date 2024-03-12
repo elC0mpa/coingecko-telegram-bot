@@ -1,8 +1,10 @@
 import { Scenes } from 'telegraf'
 import { message } from 'telegraf/filters'
+import coinService from '../../../../services/coinService'
 import searchService from '../../../../services/searchService'
 import { SceneIDS } from '../../../constants'
-import { createSelectByLabelKeyboard, NoKeyboard } from '../../../keyboards'
+import { getCoinInfo } from '../../../formatters/coins'
+import { CoinsMenuKeyboard, createSelectByLabelKeyboard, NoKeyboard } from '../../../keyboards'
 
 export const coinDataWizard = new Scenes.WizardScene(
   SceneIDS.COIN_DATA,
@@ -21,14 +23,20 @@ export const coinDataWizard = new Scenes.WizardScene(
     const query = ctx.message.text
     const options = await searchService.searchCriptos(query)
     ctx.reply('Por favor seleccione la criptomoneda', createSelectByLabelKeyboard(options, 'id'))
+    ctx.wizard.next()
   },
   async ctx => {
     if (!ctx.has(message('text'))) {
       ctx.reply('Por favor inserte un texto')
       return
     }
-    const currency = ctx.message.text
-    const options = await searchService.searchCriptos(query)
-    ctx.reply('Por favor seleccione la criptomoneda', createSelectByLabelKeyboard(options, 'id'))
+    const currencyId = ctx.message.text
+    const currencyData = await coinService.getCoinData(currencyId)
+    await ctx.replyWithPhoto(
+      { url: currencyData.image.large },
+      { caption: getCoinInfo(currencyData), parse_mode: 'HTML' }
+    )
+    ctx.reply('Menú Criptos', CoinsMenuKeyboard)
+    ctx.scene.leave()
   }
 )

@@ -1,4 +1,4 @@
-import { SearchResult } from '../types/search'
+import { SearchResponse } from '../types/search'
 import { BaseService } from './baseService'
 
 class SearchService extends BaseService {
@@ -6,7 +6,7 @@ class SearchService extends BaseService {
     super('search/')
   }
 
-  searchCriptos = (query: string): Promise<SearchResult[]> => {
+  searchCriptos = (query: string): Promise<SearchResponse[]> => {
     const url = `${this.moduleURL}?query=${query}`
     return this.client.get(url).then(({ data }) => data.coins)
   }
