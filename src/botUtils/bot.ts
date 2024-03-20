@@ -1,6 +1,7 @@
 import { Telegraf, Scenes, session } from 'telegraf'
-import { UserInteractionConstants } from './constants'
+import { SceneIDS, UserInteractionConstants } from './constants'
 import { MainMenuKeyboard } from './keyboards'
+import {coinDataWizard} from './scenes/coins'
 
 const initBot = () => {
   const bot = new Telegraf(process.env.BOT_TOKEN)
@@ -9,11 +10,13 @@ const initBot = () => {
   // bot.use(checkUserType)
   // bot.use(allowedUsers)
 
+  wizardsStage.register(coinDataWizard)
+
   bot.start(ctx => {
     ctx.reply('Menú Principal', MainMenuKeyboard)
   })
-  bot.hears(UserInteractionConstants.CRYPTO_ACTION, ctx => {
-    ctx.reply('Se presionó el 1er botón del teclado')
+  wizardsStage.hears(UserInteractionConstants.CRYPTO_ACTION, ctx => {
+    ctx.scene.enter(SceneIDS.COIN_DATA)
   })
   bot.hears(UserInteractionConstants.TRENDING_ACTION, ctx => {
     ctx.reply('Se presionó el 2do botón del teclado')
