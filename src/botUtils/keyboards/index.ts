@@ -1,1 +1,7 @@
-// export const BackNextKeyboard = Markup.keyboard([[TextConstants.NEXT_TEXT], [TextConstants.BACK_TEXT]])
+import { Markup } from 'telegraf'
+import { UserInteractionConstants } from '../constants'
+
+export const MainMenuKeyboard = Markup.keyboard([
+  [UserInteractionConstants.CRYPTO_ACTION],
+  [UserInteractionConstants.TRENDING_ACTION],
+])
