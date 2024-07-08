@@ -7,3 +7,8 @@ export const MainMenuKeyboard = Markup.keyboard([
 ])
 
 export const NoKeyboard = Markup.removeKeyboard()
+
+export const createSelectByLabelKeyboard = (items: any[], label: string, customElements: any[] = []) => {
+  const array = [...customElements, ...items.map(item => item[label])]
+  return Markup.keyboard(array)
+}

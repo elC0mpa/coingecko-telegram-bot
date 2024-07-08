@@ -1,7 +1,9 @@
-import { Markup, Scenes } from 'telegraf'
+import { Scenes } from 'telegraf'
 import { message } from 'telegraf/filters'
-import { MainMenuKeyboard, NoKeyboard } from '../../keyboards'
+import { MainMenuKeyboard, NoKeyboard, createSelectByLabelKeyboard } from '../../keyboards'
 import { SceneIDS } from '../../constants'
+import searchService from '../../../services/searchService'
+import coinService from '../../../services/coinService'
 
 export const coinDataWizard = new Scenes.WizardScene(
   SceneIDS.COIN_DATA,
@@ -17,8 +19,9 @@ export const coinDataWizard = new Scenes.WizardScene(
       ctx.reply('Por favor inserte un texto')
       return
     }
-    //Pedir datos al API
-    ctx.reply('Por favor seleccione una de las criptomonedas en el teclado', Markup.keyboard(['bitcoin', 'ethereum']))
+    const query = ctx.message.text
+    const cryptos = await searchService.searchCriptos(query)
+    ctx.reply('Por favor seleccione una de las criptomonedas en el teclado', createSelectByLabelKeyboard(cryptos, 'id'))
     return ctx.wizard.next()
   },
   async ctx => {
@@ -26,8 +29,8 @@ export const coinDataWizard = new Scenes.WizardScene(
       ctx.reply('Por favor inserte un texto')
       return
     }
-    //Pedir datos al API
-    ctx.reply(`Usted seleccionó la cripto ${ctx.message.text}`, MainMenuKeyboard)
+    const coinData = await coinService.getCoinData(ctx.message.text)
+    ctx.reply(`Usted seleccionó la cripto ${coinData.name} cuyo valor actual es de ${coinData.market_data.current_price["usd"]}`, MainMenuKeyboard)
     return ctx.scene.leave()
   }
 )
