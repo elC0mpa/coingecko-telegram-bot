@@ -10,7 +10,7 @@
     "populate": "nodemon src/utils/db/scripts.ts",
     "format": "prettier --plugin-search-dir . --write .",
     "build": "tsc",
-    "start": "redis-server --daemonize yes && NODE_ENV=production node built/index.js"
+    "start": "NODE_ENV=production node built/index.js"
   },
   "author": "el_c0mpa",
   "license": "MIT",

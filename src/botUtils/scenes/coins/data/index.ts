@@ -33,7 +33,7 @@ export const coinDataWizard = new Scenes.WizardScene(
     const currencyId = ctx.message.text
     const currencyData = await coinService.getCoinData(currencyId)
     await ctx.replyWithPhoto(
-      { url: currencyData.image.large },
+      { url: currencyData.image.large, },
       { caption: getCoinInfo(currencyData), parse_mode: 'HTML' }
     )
     ctx.reply('Menú Principal', MainMenuKeyboard)

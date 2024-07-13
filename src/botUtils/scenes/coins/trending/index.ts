@@ -4,7 +4,7 @@ import coinService from '../../../../services/coinService'
 import searchService from '../../../../services/searchService'
 import { SceneIDS } from '../../../constants'
 import { getCoinInfo } from '../../../formatters/coins'
-import { createSelectByLabelKeyboard, MainMenuKeyboard, NoKeyboard } from '../../../keyboards'
+import { createSelectByLabelKeyboard, MainMenuKeyboard } from '../../../keyboards'
 
 export const coinTrendingWizard = new Scenes.WizardScene(
   SceneIDS.COIN_TRENDING,
